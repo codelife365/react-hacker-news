@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { HashRouter, Route, Link } from 'react-router-dom'
-import StoryList from './components/StoryList'
-import StoryItem from './components/StoryItem'
+import { HashRouter, BrowserRouter, Route, Link } from 'react-router-dom'
+import asyncload from './utils/asyncload'
 import './App.css'
 
+const Router =
+  process.env.NODE_ENV === 'development' ? BrowserRouter : HashRouter
+
 export default () => (
-  <HashRouter>
+  <Router>
     <Fragment>
       <header>
         <Link to="/">
@@ -18,9 +20,19 @@ export default () => (
         <Link to="/jobs">jobs</Link>
       </header>
 
-      <Route exact path="/" component={StoryList} />
-      <Route path="/newest" component={StoryList} />
-      <Route path="/item/:id" component={StoryItem} />
+      <Route
+        exact
+        path="/"
+        component={asyncload(() => import('./components/StoryList'))}
+      />
+      <Route
+        path="/newest"
+        component={asyncload(() => import('./components/StoryList'))}
+      />
+      <Route
+        path="/item/:id"
+        component={asyncload(() => import('./components/StoryItem'))}
+      />
     </Fragment>
-  </HashRouter>
+  </Router>
 )

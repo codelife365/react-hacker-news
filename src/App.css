@@ -12,3 +12,8 @@ header a {
   color: white;
   text-decoration: none;
 }
+
+
+.parent ~ div {
+  margin-left: 30px;
+}
